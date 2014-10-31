@@ -1,12 +1,18 @@
 A simple koa middleware to make multi get request.
 
 To use it simply do :
+mount it on the get or post route you want, using koa-route for example
 ```
-require('koa-multifetch')('/api');
+app.use(koaRoute.post('/api', require('koa-multifetch')()));
 ```
-Then you can post several request to the apiUrl like this:
+It work with both GET and POST
+You can send a GET request 
 ```
-POST /apiUrl HTTP/1.1
+GET /api?product=/product/1&all_users=/users HTTP/1.1
+```
+Or you can post several request to the apiUrl like this:
+```
+POST /api HTTP/1.1
 Content-Type: application/json
 {
     "product": "/product/1",
