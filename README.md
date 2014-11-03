@@ -4,10 +4,11 @@ A simple [koa.js](http://koajs.com/) middleware to multiplex several HTTP reques
 
 ## Installation
 
-Install the package, then mount the middleware on any URL, using [koa-route](https://github.com/koajs/route) for example:
+Install the package, then mount the middleware on any URL, using [koa-route](https://github.com/koajs/route). For example, to add `/multi` as a multifetch endpoint:
 
 ```js
 var multifetch = require('koa-multifetch')();
+var koaRoute = require('koa-route');
 app.use(koaRoute.post('/multi', multifetch));
 ```
 
@@ -15,7 +16,7 @@ koa-multifetch can be mounted both as a GET and POST route.
 
 ## Usage
 
-Send a request to the route where the middleware is listening, passing the requests to do in parallel as a JSON object in the request body. For instance, to multiplex calls to `/products/1` and `/users`, make the following request:
+Send a request to the route where the middleware is listening, passing the requests to fetch in parallel as a JSON object in the request body. For instance, to fetch `/products/1` and `/users` in parallel, make the following request:
 
 ```
 POST /multi HTTP/1.1
@@ -26,7 +27,7 @@ Content-Type: application/json
 } 
 ```
 
-The middleware will call all HTTP resources in parallel, and return a response with a composite body once all the requests are finished:
+The middleware will call both HTTP resources, and return a response with a composite body once all the requests are fetched:
 ```
 { 
     "product": {
