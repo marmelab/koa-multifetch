@@ -7,7 +7,8 @@ A simple [koa.js](http://koajs.com/) middleware to multiplex several HTTP reques
 Install the package, then mount the middleware on any URL, using [koa-route](https://github.com/koajs/route) for example:
 
 ```js
-app.use(koaRoute.post('/multi', require('koa-multifetch')()));
+var multifetch = require('koa-multifetch')();
+app.use(koaRoute.post('/multi', multifetch));
 ```
 
 koa-multifetch can be mounted both as a GET and POST route.
