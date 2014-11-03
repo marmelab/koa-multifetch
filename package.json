@@ -1,20 +1,17 @@
 {
   "name": "koa-multifetch",
-  "version": "0.0.1",
-  "description": "",
-  "main": "index.js",
+  "version": "0.5.0",
+  "description": "A Koa.js middleware for performing internal batch requests",
+  "main": "lib/multiFetch.js",
   "directories": {
     "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/marmelab/koa-multifetch.git"
   },
-  "author": "",
-  "license": "BSD-2-Clause",
+  "author": "marmelab",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/marmelab/koa-multifetch/issues"
   },
