@@ -16,6 +16,7 @@
     "url": "https://github.com/marmelab/koa-multifetch/issues"
   },
   "homepage": "https://github.com/marmelab/koa-multifetch",
+  "engines": { "node" : ">=0.11" },
   "devDependencies": {
     "koa": "~0.13.0",
     "mocha": "~1.21.5",
