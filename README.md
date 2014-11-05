@@ -4,7 +4,11 @@ A simple [koa.js](http://koajs.com/) middleware to multiplex several HTTP reques
 
 ## Installation
 
-Install the package, then mount the middleware on any URL, using [koa-route](https://github.com/koajs/route). For example, to add `/multi` as a multifetch endpoint:
+```sh
+npm install koa-multifetch
+```
+
+After installing the package, mount the middleware on any URL, using [koa-route](https://github.com/koajs/route). For example, to add `/multi` as a multifetch endpoint:
 
 ```js
 var multifetch = require('koa-multifetch')();
@@ -28,7 +32,7 @@ Content-Type: application/json
 ```
 
 The middleware will call both HTTP resources, and return a response with a composite body once all the requests are fetched:
-```
+```js
 { 
     "product": {
         "code":"200",
