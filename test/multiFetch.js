@@ -23,6 +23,13 @@ describe('multifetch', function () {
     app.use(koaRoute.get('/api/boom', function* (id) {
       throw new Error('boom');
     }));
+    app.use(koaRoute.get('/api/protected', function* (id) {
+      if (this.get('Authorization') === 'Token abcdef') {
+        this.body = true;
+        return;
+      }
+      this.status = 403;
+    }));
   });
 
   it ('should return code 404 if url is not found', function (done) {
@@ -59,6 +66,27 @@ describe('multifetch', function () {
         })
         .end(done);
     });
+
+    it('should use main request headers on each sub request', co(function* () {
+      var response = yield function (done) {
+        request.agent(app.listen())
+          .get('/api?protected=/protected')
+          .set('Authorization', 'Token wrongtoken')
+          .end(done);
+      }
+
+      assert.equal(response.body.protected.code, 403);
+
+      yield function (done) {
+        request.agent(app.listen())
+          .get('/api?protected=/protected')
+          .set('Authorization', 'Token abcdef')
+          .expect(200)
+          .end(done);
+      }
+
+      assert.equal(response.body.protected.code, 403);
+    }));
 
     it('should return the header for each request', function (done) {
       request.agent(app.listen())
