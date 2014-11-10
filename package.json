@@ -1,6 +1,6 @@
 {
   "name": "koa-multifetch",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "A Koa.js middleware for performing internal batch requests",
   "main": "lib/multiFetch.js",
   "directories": {
