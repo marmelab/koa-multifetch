@@ -128,6 +128,42 @@ describe('multifetch', function () {
 
   });
 
+  describe('absolute url to true', function () {
+
+    before (function () {
+      app.use(koaRoute.post('/absolute_path', batch(true)));
+    });
+
+    describe('POST', function () {
+
+      it('should call each passed request  and return their result', co(function* () {
+        var response = yield function (done) {
+          request.agent(app.listen())
+            .post('/absolute_path')
+            .send({resource1: '/api/resource1', resource2: '/api/resource2/5'})
+            .end(done);
+        }
+
+        assert.equal(response.body.resource1.code, 200);
+        assert.deepEqual(response.body.resource1.body, {result: 'resource1'});
+        assert.equal(response.body.resource2.code, 200);
+        assert.deepEqual(response.body.resource2.body, {result: 'resource2/5'});
+      }));
+
+      it ('should return the header for each request', function (done) {
+        request.agent(app.listen())
+          .post('/absolute_path')
+          .send({resource1: '/api/resource1', resource2: '/api/resource2/5'})
+          .expect(function (res) {
+            assert.include(res.body.resource1.headers, {name: 'custom-header', value: 'why not'});
+            assert.include(res.body.resource2.headers, {name: 'other-custom-header', value: 'useful'});
+          })
+          .end(done);
+      });
+
+    });
+  });
+
   after(function () {
     delete app;
   });

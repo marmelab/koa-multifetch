@@ -16,6 +16,13 @@ var koaRoute = require('koa-route');
 app.use(koaRoute.post('/multi', multifetch));
 ```
 
+By default koa-multifetch use relative url. In this example all request will be prepended with "/multi".
+
+If you want to allow koa-multifetch to send request anywhere on your site, enable absoluteUrl option by calling
+```js
+var multifetch = require('koa-multifetch')(true); // enable absolute url
+```
+
 koa-multifetch can be mounted both as a GET and POST route.
 
 ## Usage
