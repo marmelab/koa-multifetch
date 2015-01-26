@@ -16,13 +16,16 @@
     "url": "https://github.com/marmelab/koa-multifetch/issues"
   },
   "homepage": "https://github.com/marmelab/koa-multifetch",
-  "engines": { "node" : ">=0.11" },
+  "engines": {
+    "node": ">=0.11"
+  },
   "devDependencies": {
-    "koa": "~0.13.0",
-    "mocha": "~1.21.5",
     "chai": "~1.9.2",
-    "supertest": "~0.14.0",
-    "koa-route": "~2.2.0"
+    "koa": "~0.13.0",
+    "koa-route": "~2.2.0",
+    "mocha": "~1.21.5",
+    "mockery": "^1.4.0",
+    "supertest": "~0.14.0"
   },
   "dependencies": {
     "superagent": "~0.20.0",
