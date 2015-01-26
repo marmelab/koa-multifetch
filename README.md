@@ -23,6 +23,11 @@ If you want to allow koa-multifetch to send request anywhere on your site, enabl
 var multifetch = require('koa-multifetch')(true); // enable absolute url
 ```
 
+If you want to force koa-multifetch to send request on a specific host (for exemple if you are behind a load balancer on level 7), enable custom host option by calling
+```js
+var multifetch = require('koa-multifetch')(false, 'http://localhost:3000'); // set a custom host for multiFetch requests, absolute url should be true or false
+```
+
 koa-multifetch can be mounted both as a GET and POST route.
 
 ## Usage
@@ -35,12 +40,12 @@ Content-Type: application/json
 {
     "product": "/products/1",
     "all_users": "/users"
-} 
+}
 ```
 
 The middleware will call both HTTP resources, and return a response with a composite body once all the requests are fetched:
 ```js
-{ 
+{
     "product": {
         "code":"200",
         "headers":[
