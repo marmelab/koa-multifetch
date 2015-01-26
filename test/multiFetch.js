@@ -73,7 +73,7 @@ describe('multifetch', function () {
           .get('/api?protected=/protected')
           .set('Authorization', 'Token wrongtoken')
           .end(done);
-      }
+      };
 
       assert.equal(response.body.protected.code, 403);
 
@@ -83,7 +83,7 @@ describe('multifetch', function () {
           .set('Authorization', 'Token abcdef')
           .expect(200)
           .end(done);
-      }
+      };
 
       assert.equal(response.body.protected.code, 403);
     }));
@@ -142,7 +142,7 @@ describe('multifetch', function () {
             .post('/absolute_path')
             .send({resource1: '/api/resource1', resource2: '/api/resource2/5'})
             .end(done);
-        }
+        };
 
         assert.equal(response.body.resource1.code, 200);
         assert.deepEqual(response.body.resource1.body, {result: 'resource1'});
