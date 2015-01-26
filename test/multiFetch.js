@@ -131,7 +131,7 @@ describe('multifetch', function () {
   describe('absolute url to true', function () {
 
     before (function () {
-      app.use(koaRoute.post('/absolute_path', batch(true)));
+      app.use(koaRoute.post('/absolute_path', batch({absolute: true})));
     });
 
     describe('POST', function () {
