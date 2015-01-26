@@ -27,7 +27,7 @@ describe('multifetch with custom header_host', function () {
     var batch = require('../lib/multiFetch');
 
     app = koa();
-    app.use(koaRoute.get('/api', batch(false, 'http://localhost:3000')));
+    app.use(koaRoute.get('/api', batch({header_host: 'http://localhost:3000'})));
     app.use(koaRoute.get('/api/resource1', function* () {
       this.set('Custom-Header', 'why not');
       this.body = {result: 'resource1'};
