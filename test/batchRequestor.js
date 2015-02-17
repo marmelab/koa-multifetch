@@ -9,11 +9,12 @@ describe('batchRequestor', function () {
       get: function* (url, headers) {
         this.getCall++;
         this.headers = headers;
+
         return 'result for ' + url;
       },
       headers: null,
       getCall: 0
-    }
+    };
     batchRequestor = require('../lib/batchRequestor')(mockRequestor);
   });
 
@@ -39,7 +40,7 @@ describe('batchRequestor', function () {
     var expectedHeaders = { Accept: 'text/json'};
 
     yield batchRequestor({resource1: 'api/resource1/5', resource2: 'api/resource2'}, '/host/api', { Accept: 'text/json'});
-    assert.deepEqual(mockRequestor.headers, expectedHeaders)
+    assert.deepEqual(mockRequestor.headers, expectedHeaders);
 
     assert.equal(mockRequestor.getCall, 2);
   }));

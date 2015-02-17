@@ -16,20 +16,17 @@ describe('httpClient', function () {
     httpClient = require('../lib/httpClient')(superAgentMock);
   });
 
-  it('should throw an error on unknown error', co(function* () {
+  it('should return code 500 and its detail on unknown error', co(function* () {
     superAgentMock.on = function (type, cb) {
-      cb(new Error('unexpected'));
+      var error = new Error('unknown error');
+      error.code = 'UNEXPECTED';
+      cb(error);
     };
 
-    var error;
-    try {
-      yield httpClient.get('wrong/url');
-    } catch (e) {
-      error = e;
-    }
+    var response = yield httpClient.get('wrong/url');
 
-    assert.notEqual(error, null);
-    assert.deepEqual(error.message, 'unexpected');
+    assert.equal(response.code, 500);
+    assert.equal(response.body, 'UNEXPECTED: unknown error');
   }));
 
   it('should return res with code 404 on inexistant url', co(function* () {
