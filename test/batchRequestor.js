@@ -51,16 +51,16 @@ describe('batchRequestor', function () {
       get: function* (url, headers) {
         responseHeaders = {};
         if ('/api/1' === url) {
-          responseHeaders = {
-            'Cache-Control': 'public, max-age=300',
-            'Vary': 'Cookie'
-          };
+          responseHeaders = [
+            { name: 'Cache-Control', value: 'public, max-age=300' },
+            { name: 'Vary', value: 'Cookie' }
+          ];
         }
         if ('/api/2' === url) {
-          responseHeaders = {
-            'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-            'Vary': 'User-Agent'
-          };
+          responseHeaders = [
+            { name: 'Cache-Control', value: 'public, max-age=3600, s-maxage=3600' },
+            { name: 'Vary', value: 'User-Agent' }
+          ];
         }
 
         return { code: 200, body: 'result for ' + url, headers: responseHeaders };
@@ -78,10 +78,10 @@ describe('batchRequestor', function () {
       get: function* (url, headers) {
         responseHeaders = {};
         if ('/api/1' === url) {
-          responseHeaders = {
-            'Cache-Control': 'public, max-age=300',
-            'Vary': 'Cookie'
-          };
+          responseHeaders = [
+            { name: 'Cache-Control', value: 'public, max-age=300' },
+            { name: 'Vary', value: 'Cookie' }
+          ];
         }
 
         return { code: 200, body: 'result for ' + url, headers: responseHeaders };
@@ -99,9 +99,9 @@ describe('batchRequestor', function () {
       get: function* (url, headers) {
         responseHeaders = {};
         if ('/api/1' === url) {
-          responseHeaders = {
-            'Cache-Control': 'no-cache',
-          };
+          responseHeaders = [
+            { name: 'Cache-Control', value: 'no-cache' }
+          ];
         }
 
         return { code: 200, body: 'result for ' + url, headers: responseHeaders };
