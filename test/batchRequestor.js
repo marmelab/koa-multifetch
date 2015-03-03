@@ -10,7 +10,7 @@ describe('batchRequestor', function () {
         this.getCall++;
         this.headers = headers;
 
-        return 'result for ' + url;
+        return { code: 200, body: 'result for ' + url, headers: {} };
       },
       headers: null,
       getCall: 0
@@ -19,10 +19,10 @@ describe('batchRequestor', function () {
   });
 
   it('should return result for all given url', co(function* () {
-
-    assert.deepEqual(yield batchRequestor({resource1: '/resource1/5', resource2: '/resource2'}, '/host/api'), {
-      resource1: 'result for /host/api/resource1/5',
-      resource2: 'result for /host/api/resource2'
+    var result = yield batchRequestor({resource1: '/resource1/5', resource2: '/resource2'}, '/host/api');
+    assert.deepEqual(result.body, {
+      resource1: { code: 200, body: 'result for /host/api/resource1/5', headers: {} },
+      resource2: { code: 200, body: 'result for /host/api/resource2', headers: {} }
     });
   }));
 
@@ -43,5 +43,73 @@ describe('batchRequestor', function () {
     assert.deepEqual(mockRequestor.headers, expectedHeaders);
 
     assert.equal(mockRequestor.getCall, 2);
+  }));
+
+  it('should include Cache-Control and Vary headers extracted from results', co(function* () {
+    var responseHeaders = {};
+    mockRequestor = {
+      get: function* (url, headers) {
+        responseHeaders = {};
+        if ('/api/1' === url) {
+          responseHeaders = [
+            { name: 'Cache-Control', value: 'public, max-age=300' },
+            { name: 'Vary', value: 'Cookie' }
+          ];
+        }
+        if ('/api/2' === url) {
+          responseHeaders = [
+            { name: 'Cache-Control', value: 'public, max-age=3600, s-maxage=3600' },
+            { name: 'Vary', value: 'User-Agent' }
+          ];
+        }
+
+        return { code: 200, body: 'result for ' + url, headers: responseHeaders };
+      }
+    }
+    batchRequestor = require('../lib/batchRequestor')(mockRequestor);
+
+    var results = yield batchRequestor({resource1: 'api/1', resource2: 'api/2'}, '/');
+    assert.deepEqual(results.headers, { 'Cache-Control': 'public, max-age=3600, s-maxage=3600', Vary: 'Cookie, User-Agent' });
+  }));
+
+  it('should not include Cache-Control and Vary header if at least one of results omit them', co(function* () {
+    var responseHeaders = {};
+    mockRequestor = {
+      get: function* (url, headers) {
+        responseHeaders = {};
+        if ('/api/1' === url) {
+          responseHeaders = [
+            { name: 'Cache-Control', value: 'public, max-age=300' },
+            { name: 'Vary', value: 'Cookie' }
+          ];
+        }
+
+        return { code: 200, body: 'result for ' + url, headers: responseHeaders };
+      }
+    }
+    batchRequestor = require('../lib/batchRequestor')(mockRequestor);
+
+    results = yield batchRequestor({ resource1: 'api/1', resource2: 'api/2' }, '/');
+    assert.deepEqual(results.headers, {});
+  }));
+
+  it('should set Cache-Control if at least one of results have no-cache directive', co(function* () {
+    var responseHeaders = {};
+    mockRequestor = {
+      get: function* (url, headers) {
+        responseHeaders = {};
+        if ('/api/1' === url) {
+          responseHeaders = [
+            { name: 'Cache-Control', value: 'no-cache' }
+          ];
+        }
+
+        return { code: 200, body: 'result for ' + url, headers: responseHeaders };
+      }
+    }
+    batchRequestor = require('../lib/batchRequestor')(mockRequestor);
+
+    results = yield batchRequestor({ resource1: 'api/1', resource2: 'api/2' }, '/');
+    assert.deepEqual(results.headers, { 'Cache-Control': 'no-cache' });
   }));
 });
