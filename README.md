@@ -1,3 +1,12 @@
+<table>
+        <tr>
+            <td><img width="20" src="https://cdnjs.cloudflare.com/ajax/libs/octicons/8.5.0/svg/archive.svg" alt="archived" /></td>
+            <td><strong>Archived Repository</strong><br />
+            This code is no longer maintained. Feel free to fork it, but use it at your own risks.
+        </td>
+        </tr>
+</table>
+
 # koa-multifetch
 
 A simple [koa.js](http://koajs.com/) middleware to multiplex several HTTP requests into one. Very useful on mobile devices where latency can kill performance. Based on [Facebook's Batch Requests philosophy](https://developers.facebook.com/docs/graph-api/making-multiple-requests), and inspired by [multifetch](https://github.com/e-conomic/multifetch) for Express.
